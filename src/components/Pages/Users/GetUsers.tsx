@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { RenderUsers } from "./RenderUsers";
 
 export const GetUsers = () => {
   const [usersCards, setUsersCards] = useState<any[]>([]);
@@ -58,6 +59,8 @@ export const GetUsers = () => {
           ))}
         </div>
       )}
+
+      <RenderUsers />
     </>
   );
 };

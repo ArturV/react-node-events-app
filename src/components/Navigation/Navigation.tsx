@@ -10,7 +10,7 @@ export const Navigation = () => {
         <Link to="/users">Users</Link>
         <Link to="/add-user">Add User</Link>
         <Link to="/add-event">Add Event</Link>
-        <Link to="/signIn">SignIn</Link>
+        <Link to="/signin">SignIn</Link>
       </header>
 
       <Routes>
