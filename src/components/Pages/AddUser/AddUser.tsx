@@ -33,7 +33,6 @@ export const AddUser = () => {
           handleUserDataChange(e.target.value, "nameAndSurname");
         }}
       />
-
       <select
         name="event"
         value={userData.event}
@@ -46,7 +45,6 @@ export const AddUser = () => {
         <option value="c">c</option>
         <option value="d">d</option>
       </select>
-
       <input
         type="text"
         placeholder="Email"
@@ -55,7 +53,6 @@ export const AddUser = () => {
           handleUserDataChange(e.target.value, "email");
         }}
       />
-
       <input
         type="date"
         value={userData.birthDate}
@@ -74,7 +71,7 @@ export const AddUser = () => {
           handleUserDataChange(e.target.value, "age");
         }}
       />
-
+      //todo: add age calculation
       <button>Submit</button>
     </form>
   );
