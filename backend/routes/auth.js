@@ -50,7 +50,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/signin", async (req, res) => {
   let userData = req.body;
   try {
     userData = await loginUserSchema.validateAsync(userData);
