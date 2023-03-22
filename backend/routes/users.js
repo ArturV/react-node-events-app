@@ -5,7 +5,17 @@ import { MYSQL_CONFIG, jwtSecret } from "../src/config.js";
 export const addUserToEvent = async (req, res) => {
   const accessToken = req.headers.authorization?.split(" ")[1];
 
-  const idevent = +req.body?.id?.trim();
+  const choosedEventId = +req.body?.idevent;
+  const inputFullname = req.body?.fullname;
+  const inputEmail = req.body?.email.trim();
+  const inputBirthday = req.body?.birthdate;
+  const inputAge = +req.body?.age;
+
+  console.log(choosedEventId);
+  console.log(inputFullname);
+  console.log(inputEmail);
+  console.log(inputBirthday);
+  console.log(inputAge);
 
   let payload = null;
 
@@ -22,10 +32,11 @@ export const addUserToEvent = async (req, res) => {
     return res.status(400).end();
   }
 
-  if (!idevent || idevent < 0) {
+  if (!choosedEventId || choosedEventId < 0) {
+    console.log(choosedEventId);
     return res
       .status(402)
-      .send({ error: "Please input correct group id!" })
+      .send({ error: "Please input correct event id!" })
       .end();
   }
 
@@ -33,9 +44,8 @@ export const addUserToEvent = async (req, res) => {
     const con = await mysql.createConnection(MYSQL_CONFIG);
 
     const [isUserInEvent] = await con.execute(
-      `SELECT idevent , iduser 
-    FROM events 
-    WHERE iduser= ${payload.id} AND idevent=${idevent} ;`
+      `SELECT idevent, email FROM users 
+    WHERE email='${inputEmail}' AND idevent=${choosedEventId} ;`
     );
 
     await con.end();
@@ -44,7 +54,7 @@ export const addUserToEvent = async (req, res) => {
       try {
         const con = await mysql.createConnection(MYSQL_CONFIG);
         const [result] = await con.execute(
-          `INSERT INTO events (idevent, iduser) VALUES ('${idevent}','${payload.id}')`
+          `INSERT INTO users (idevent, fullname, email, birthdate, age) VALUES ('${choosedEventId}','${inputFullname}','${inputEmail}','${inputBirthday}','${inputAge}')`
         );
 
         await con.end();
@@ -56,7 +66,7 @@ export const addUserToEvent = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ error: "Error! This user already exists in this group" })
+        .send({ error: "Error! This user already exists in this event" })
         .end();
     }
   } catch (error) {
@@ -88,9 +98,9 @@ export const getUserEvents = async (req, res) => {
   try {
     const con = await mysql.createConnection(MYSQL_CONFIG);
 
-    const query = `SELECT events.idevent, users.name FROM events INNER JOIN users ON users.iduser = events.iduser`;
-
+    const query = `SELECT events.idevent, events.name, users.fullname, users.email, users.birthdate FROM events INNER JOIN users ON users.iduser = events.iduser`;
     const [result] = await con.execute(query);
+    console.log({ result });
 
     await con.end();
 
