@@ -16,7 +16,7 @@ export const GetUsers = () => {
     }
     setTimeout(() => {
       setIsLoading(false);
-    }, 1_000);
+    }, 1_00);
   };
 
   const removeData = (id: any) => {
