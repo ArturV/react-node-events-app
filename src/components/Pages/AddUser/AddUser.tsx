@@ -8,7 +8,25 @@ export const AddUser = () => {
     age: null,
   });
 
-  let date = new Date().toLocaleDateString("lt-LT");
+  const calculateAge = (birthDate: string): number => {
+    if (!birthDate || birthDate === "") {
+      return 0;
+    } else {
+      let today = new Date();
+      let birthDayConverted = new Date(birthDate);
+      let age = today.getFullYear() - birthDayConverted.getFullYear();
+      const month = today.getMonth() - birthDayConverted.getMonth();
+
+      if (
+        month < 0 ||
+        (month === 0 && today.getDate() < birthDayConverted.getDate())
+      ) {
+        age--;
+      }
+
+      return age;
+    }
+  };
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -59,19 +77,16 @@ export const AddUser = () => {
         min="1918-01-01"
         onChange={(e) => {
           console.log(e.target.value);
-          console.log(date);
           handleUserDataChange(e.target.value, "birthDate");
         }}
       />
       <input
         type="text"
-        placeholder={userData.birthDate}
-        value={userData.birthDate}
-        onChange={(e) => {
-          handleUserDataChange(e.target.value, "age");
-        }}
+        placeholder="Age"
+        readOnly
+        value={calculateAge(userData.birthDate)}
       />
-      //todo: add age calculation
+
       <button>Submit</button>
     </form>
   );
