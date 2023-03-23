@@ -4,18 +4,24 @@ import { useEffect, useState } from "react";
 export const GetEvents = () => {
   const [eventsCard, setEventsCard] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const SERV = `http://localhost:3000/events`;
 
   const getEventsData = async () => {
     try {
       const response = await axios
-        .get("/events")
-        .then((response) => console.log(response));
-      // setEventsCard(response.data);
-      // console.log(response.data);
+        .get("http://localhost:5000/events", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((res) => {
+          if (Array.isArray(res.data)) {
+            setEventsCard(res.data.filter((med: any) => med.name));
+          }
+        });
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
+
     setTimeout(() => {
       setIsLoading(false);
     }, 1_00);
