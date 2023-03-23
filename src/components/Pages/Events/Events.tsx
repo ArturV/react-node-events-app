@@ -1,3 +1,10 @@
+import { GetEvents } from "./GetEvents";
+
 export const Events = () => {
-  return <p>Events</p>;
+  return (
+    <>
+      <h1>Events</h1>
+      <GetEvents />
+    </>
+  );
 };

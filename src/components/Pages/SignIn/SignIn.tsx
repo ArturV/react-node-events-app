@@ -10,8 +10,56 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useState, useContext, createContext } from "react";
+//import AuthContext from "../context/AuthProvider";
+import axios from "axios";
+import { SyntheticEventData } from "react-dom/test-utils";
 
 export const SignIn = () => {
+  //const { setAuth } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    console.log(email, password);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/auth/signin",
+        JSON.stringify({ email, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+
+      console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response));
+
+      const accessToken = response?.data?.accessToken;
+
+      //setAuth({ email, password, accessToken });
+      setEmail("");
+      setPassword("");
+      //  setSuccess(true);}
+    } catch (error) {
+      console.log(error);
+    }
+
+    //   try {
+    //     const response = await fetch("http://localhost:5000/api/auth/login", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({ email, password }),
+    //     });
+    //     const data = await response.json();
+    //     console.log(data);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    //  }
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -29,7 +77,7 @@ export const SignIn = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -39,6 +87,8 @@ export const SignIn = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             margin="normal"
@@ -49,25 +99,21 @@ export const SignIn = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            // onClick={handleSubmit}
           >
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
+            <Grid item xs></Grid>
             <Grid item>
               <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}

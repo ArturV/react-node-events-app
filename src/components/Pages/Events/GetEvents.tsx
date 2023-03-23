@@ -1,17 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { RenderUsers } from "./RenderUsers";
 
-export const GetUsers = () => {
-  const [usersCards, setUsersCards] = useState<any[]>([]);
+export const GetEvents = () => {
+  const [eventsCard, setEventsCard] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const SERV = `http://localhost:5000/users`;
+  const SERV = `http://localhost:3000/events`;
 
-  const getData = async () => {
+  const getEventsData = async () => {
     try {
-      const response = await axios.get(SERV);
-
-      setUsersCards(response.data);
+      const response = await axios
+        .get("/events")
+        .then((response) => console.log(response));
+      // setEventsCard(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -28,15 +29,15 @@ export const GetUsers = () => {
     }
 
     axios
-      .delete(`http://localhost:3000/users/${id}`)
+      .delete(`http://localhost:3001/events/${id}`)
       .then(() => {
-        getData();
+        getEventsData();
       })
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
-    getData();
+    getEventsData();
   }, []);
 
   return (
@@ -44,24 +45,21 @@ export const GetUsers = () => {
       {isLoading ? (
         <p>Loading</p>
       ) : (
-        <div className="users-card">
-          {usersCards.map((userCard) => (
+        <div className="map-card">
+          {eventsCard.map((eventList) => (
             <div
               onClick={() => {
-                removeData(userCard.iduser);
+                removeData(eventList.idevent);
               }}
-              key={userCard.id}
-              className="users-container"
+              key={eventList.idevent}
+              className="events-container"
             >
-              <p>ID:{userCard.iduser}</p>
-              <p>People:{userCard.fullname}</p>
-              <p>Price:{userCard.event}</p>
+              <p>ID:{eventList.idevent}</p>
+              <p>Name:{eventList.name}</p>
             </div>
           ))}
         </div>
       )}
-
-      <RenderUsers />
     </>
   );
 };
