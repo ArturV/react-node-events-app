@@ -22,26 +22,41 @@ export const SignIn = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(email, password);
+    //console.log(email, password);
 
     try {
       const response = await axios.post(
         "http://localhost:5000/auth/signin",
-        JSON.stringify({ email, password }),
+        //JSON.stringify({ email, password }),
+        { email, password },
         {
-          headers: { "Content-Type": "application/json" },
           withCredentials: true,
+
+          headers: {
+            //  Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            //Authorization:
+            //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhZG1pbkBhcnQubHQiLCJpYXQiOjE2Nzk1ODk2ODd9.FHfyhFvQfyMdlISzW6u4yYQn2rP1LZsEA7woLCfgHwI",
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
         }
       );
 
-      console.log(JSON.stringify(response?.data));
-      console.log(JSON.stringify(response));
+      if (response) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+        setEmail("");
+        setPassword("");
+      } else console.log("error");
 
-      const accessToken = response?.data?.accessToken;
+      // console.log(JSON.stringify(response?.data));
+
+      // console.log(JSON.stringify(response));
+
+      //const accessToken = await response?.data?.accessToken;
 
       //setAuth({ email, password, accessToken });
-      setEmail("");
-      setPassword("");
+      //  setEmail("");
+      // setPassword("");
       //  setSuccess(true);}
     } catch (error) {
       console.log(error);

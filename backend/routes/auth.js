@@ -88,7 +88,7 @@ router.post("/signin", async (req, res) => {
         { id: data[0].id, email: data[0].email },
         jwtSecret
       );
-
+      // res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
       return res.send({ message: "Succesfully logged in", accessToken }).end();
     }
 
