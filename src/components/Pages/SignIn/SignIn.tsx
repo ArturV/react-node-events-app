@@ -38,6 +38,7 @@ export const SignIn = () => {
         setEmail("");
         setPassword("");
         navigate("/events");
+        window.location.reload();
       } else console.log("error");
     } catch (error) {
       console.log(error);

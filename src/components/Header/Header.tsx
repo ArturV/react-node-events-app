@@ -1,14 +1,16 @@
 import IconButton from "@mui/material/IconButton";
 import LockIcon from "@mui/icons-material/Lock";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Navigation } from "../Navigation";
+import axios from "axios";
+import { createContext, useState } from "react";
+import { redirect } from "react-router-dom";
 
 export const Header = () => {
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    // setAnchorEl(event.currentTarget);
-  };
+  const token = localStorage.getItem("accessToken");
 
   return (
     <>
@@ -24,12 +26,29 @@ export const Header = () => {
           >
             Events App
           </Typography>
-          <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <LockIcon />
+
+          <IconButton size="small" sx={{ ml: 2 }}>
+            <AccountBoxIcon fontSize="large" />
           </IconButton>
-          <Button variant="outlined" size="small">
-            Sign In
-          </Button>
+          {token ? (
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => (
+                localStorage.removeItem("accessToken"), window.location.reload()
+              )}
+            >
+              Sign Out
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => (window.location.href = "/signin")}
+            >
+              Sign In
+            </Button>
+          )}
         </Toolbar>
 
         <Navigation />

@@ -101,4 +101,13 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+// router.get("/signout", (req, res) => {
+//   req.logout();
+//   res
+//     .status(200)
+//     .json({
+//       status: "Bye!",
+//     });
+// });
+
 export default router;

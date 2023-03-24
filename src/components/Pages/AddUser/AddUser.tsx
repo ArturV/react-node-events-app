@@ -11,6 +11,9 @@ import { EventChooser } from "./EventChooser";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+import MenuItem from "@mui/material/MenuItem";
 
 export const AddUser = () => {
   const [userData, setUserData] = useState({
@@ -20,6 +23,11 @@ export const AddUser = () => {
     birthDate: "",
     age: null,
   });
+
+  const [selected, setSelected] = useState([]);
+  const selectionChangeHandler = (event: any) => {
+    setSelected(event.target.value);
+  };
 
   const { exportedEvents } = EventChooser();
 
@@ -64,6 +72,10 @@ export const AddUser = () => {
     setUserData((prevUserData) => ({ ...prevUserData, [key]: value }));
   };
 
+  const handleChange = (event: any) => {
+    setUserData(event.target.value);
+  };
+
   return (
     <>
       <Typography height="40px" variant="h4" sx={{ m: 4 }}>
@@ -94,6 +106,33 @@ export const AddUser = () => {
             onChange={handleSelect}
           />
 
+          {/* <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={exportedEvents.map((event) => event.name)}
+            label="even"
+            onChange={handleSelect}
+          >
+            <MenuItem value={10}>Ten</MenuItem>
+          </Select> */}
+
+          {/* <Select
+            labelId="simple-select-label"
+            value={selected}
+            onChange={selectionChangeHandler}
+            renderValue={(selected) => (
+              <div>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </div>
+            )}
+          >
+            {exportedEvents.map((event) => {
+              return <MenuItem value={event.name}>{event.name}</MenuItem>;
+            })}
+          </Select> */}
+
           <TextField
             margin="normal"
             required
@@ -113,7 +152,6 @@ export const AddUser = () => {
             id="birth"
             label="Date of birth"
             name="birth"
-            aria-required="true"
             value={userData.birthDate}
             onChange={(e) => handleUserDataChange(e.target.value, "birthDate")}
           />
