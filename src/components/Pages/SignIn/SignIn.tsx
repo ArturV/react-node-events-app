@@ -2,40 +2,31 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useState, useContext, createContext } from "react";
-//import AuthContext from "../context/AuthProvider";
+import { useState } from "react";
 import axios from "axios";
-import { SyntheticEventData } from "react-dom/test-utils";
+import { useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
-  //const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    //console.log(email, password);
 
     try {
       const response = await axios.post(
         "http://localhost:5000/auth/signin",
-        //JSON.stringify({ email, password }),
         { email, password },
         {
           withCredentials: true,
-
           headers: {
-            //  Authorization: "Bearer " + localStorage.getItem("accessToken"),
-            //Authorization:
-            //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhZG1pbkBhcnQubHQiLCJpYXQiOjE2Nzk1ODk2ODd9.FHfyhFvQfyMdlISzW6u4yYQn2rP1LZsEA7woLCfgHwI",
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
           },
@@ -46,18 +37,8 @@ export const SignIn = () => {
         localStorage.setItem("accessToken", response.data.accessToken);
         setEmail("");
         setPassword("");
+        navigate("/events");
       } else console.log("error");
-
-      // console.log(JSON.stringify(response?.data));
-
-      // console.log(JSON.stringify(response));
-
-      //const accessToken = await response?.data?.accessToken;
-
-      //setAuth({ email, password, accessToken });
-      //  setEmail("");
-      // setPassword("");
-      //  setSuccess(true);}
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +91,6 @@ export const SignIn = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            // onClick={handleSubmit}
           >
             Sign In
           </Button>

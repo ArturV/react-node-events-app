@@ -1,4 +1,17 @@
 import React, { FormEventHandler, useState } from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { Autocomplete } from "@mui/material";
+import type { TEvent } from "../../Types/types";
+import { EventChooser } from "./EventChooser";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
 export const AddUser = () => {
   const [userData, setUserData] = useState({
     nameAndSurname: "",
@@ -7,6 +20,8 @@ export const AddUser = () => {
     birthDate: "",
     age: null,
   });
+
+  const { exportedEvents } = EventChooser();
 
   const calculateAge = (birthDate: string): number => {
     if (!birthDate || birthDate === "") {
@@ -34,6 +49,14 @@ export const AddUser = () => {
     console.log(userData);
   };
 
+  const handleSelect = (event: any) => {
+    setUserData({
+      ...userData,
+      //event: event.target.value,
+      event: event.target.value,
+    });
+  };
+
   const handleUserDataChange = (
     value: string,
     key: "email" | "nameAndSurname" | "event" | "birthDate" | "age"
@@ -42,52 +65,146 @@ export const AddUser = () => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <input
-        type="text"
-        placeholder="Name & Surname"
-        value={userData.nameAndSurname}
-        onChange={(e) => {
-          handleUserDataChange(e.target.value, "nameAndSurname");
-        }}
-      />
-      <select
-        name="event"
-        value={userData.event}
-        onChange={(e) => {
-          handleUserDataChange(e.target.value, "event");
-        }}
-      >
-        <option value="a">a</option>
-        <option value="b">b</option>
-        <option value="c">c</option>
-        <option value="d">d</option>
-      </select>
-      <input
-        type="text"
-        placeholder="Email"
-        value={userData.email}
-        onChange={(e) => {
-          handleUserDataChange(e.target.value, "email");
-        }}
-      />
-      <input
-        type="date"
-        value={userData.birthDate}
-        min="1918-01-01"
-        onChange={(e) => {
-          console.log(e.target.value);
-          handleUserDataChange(e.target.value, "birthDate");
-        }}
-      />
-      <input
-        type="text"
-        placeholder="Age"
-        readOnly
-        value={calculateAge(userData.birthDate)}
-      />
+    <>
+      <Typography height="40px" variant="h4" sx={{ m: 4 }}>
+        Add User to Event
+      </Typography>
+      <Container component="main" maxWidth="xs">
+        <Box component="form" onSubmit={handleFormSubmit} sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="FullName"
+            label="Add Name & Surname"
+            name="FullName"
+            autoFocus
+            aria-required="true"
+            value={userData.nameAndSurname}
+            onChange={(e) =>
+              handleUserDataChange(e.target.value, "nameAndSurname")
+            }
+          />
 
-      <button>Submit</button>
-    </form>
+          <Autocomplete
+            //options={[...new Set(exportedEvents.map((event) => event.name))]}
+            options={exportedEvents.map((event) => event.name)}
+            aria-required="true"
+            renderInput={(params) => <TextField {...params} label="Events" />}
+            onChange={handleSelect}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            aria-required="true"
+            value={userData.email}
+            onChange={(e) => handleUserDataChange(e.target.value, "email")}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="birth"
+            label="Date of birth"
+            name="birth"
+            aria-required="true"
+            value={userData.birthDate}
+            onChange={(e) => handleUserDataChange(e.target.value, "birthDate")}
+          />
+
+          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label="Date of birth" value={userData.birthDate} />
+          </LocalizationProvider> */}
+
+          <input
+            type="date"
+            value={userData.birthDate}
+            min="1918-01-01"
+            onChange={(e) => {
+              console.log(e.target.value);
+              handleUserDataChange(e.target.value, "birthDate");
+            }}
+          />
+
+          <TextField
+            margin="normal"
+            aria-readonly="true"
+            fullWidth
+            id="age"
+            label="User age"
+            name="age"
+            InputProps={{
+              readOnly: true,
+            }}
+            value={calculateAge(userData.birthDate)}
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Add
+          </Button>
+        </Box>
+      </Container>
+    </>
   );
+
+  // return (
+  //   <form onSubmit={handleFormSubmit}>
+  //     <input
+  //       type="text"
+  //       placeholder="Name & Surname"
+  //       value={userData.nameAndSurname}
+  //       onChange={(e) => {
+  //         handleUserDataChange(e.target.value, "nameAndSurname");
+  //       }}
+  //     />
+  //     <select
+  //       name="event"
+  //       value={userData.event}
+  //       onChange={(e) => {
+  //         handleUserDataChange(e.target.value, "event");
+  //       }}
+  //     >
+  //       <option value="a">a</option>
+  //       <option value="b">b</option>
+  //       <option value="c">c</option>
+  //       <option value="d">d</option>
+  //     </select>
+  //     <input
+  //       type="text"
+  //       placeholder="Email"
+  //       value={userData.email}
+  //       onChange={(e) => {
+  //         handleUserDataChange(e.target.value, "email");
+  //       }}
+  //     />
+  //     <input
+  //       type="date"
+  //       value={userData.birthDate}
+  //       min="1918-01-01"
+  //       onChange={(e) => {
+  //         console.log(e.target.value);
+  //         handleUserDataChange(e.target.value, "birthDate");
+  //       }}
+  //     />
+  //     <input
+  //       type="text"
+  //       placeholder="Age"
+  //       readOnly
+  //       value={calculateAge(userData.birthDate)}
+  //     />
+
+  //     <button>Submit</button>
+  //   </form>
+  // );
 };

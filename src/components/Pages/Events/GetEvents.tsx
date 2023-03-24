@@ -1,8 +1,25 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import type { TEvent } from "../../Types/types";
+
+// export type TEvent = {
+//   idevent: number;
+//   name: string | null;
+//   iduser: number;
+//   users: string | null;
+// };
 
 export const GetEvents = () => {
-  const [eventsCard, setEventsCard] = useState<any[]>([]);
+  const [eventsCard, setEventsCard] = useState<TEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getEventsData = async () => {
@@ -15,7 +32,7 @@ export const GetEvents = () => {
         })
         .then((res) => {
           if (Array.isArray(res.data)) {
-            setEventsCard(res.data.filter((med: any) => med.name));
+            setEventsCard(res.data);
           }
         });
     } catch (error) {
@@ -27,7 +44,7 @@ export const GetEvents = () => {
     }, 1_00);
   };
 
-  const removeData = (id: any) => {
+  const removeData = (id: number) => {
     const shouldDelete = window.confirm("Are you want to delete?");
 
     if (!shouldDelete) {
@@ -35,7 +52,7 @@ export const GetEvents = () => {
     }
 
     axios
-      .delete(`http://localhost:3001/events/${id}`)
+      .delete(`http://localhost:5000/events/${id}`)
       .then(() => {
         getEventsData();
       })
@@ -48,24 +65,59 @@ export const GetEvents = () => {
 
   return (
     <>
-      {isLoading ? (
-        <p>Loading</p>
-      ) : (
-        <div className="map-card">
+      <Typography height="40px" variant="h4" sx={{ m: 4 }}>
+        Events
+      </Typography>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Event</TableCell>
+            <TableCell>Registrations</TableCell>
+            <TableCell align="right">Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {eventsCard.map((eventList) => (
-            <div
-              onClick={() => {
-                removeData(eventList.idevent);
-              }}
-              key={eventList.idevent}
-              className="events-container"
-            >
-              <p>ID:{eventList.idevent}</p>
-              <p>Name:{eventList.name}</p>
-            </div>
+            <TableRow key={eventList.idevent}>
+              <TableCell>{eventList.name}</TableCell>
+              <TableCell>
+                <Link to="/users">See users</Link>
+              </TableCell>
+
+              <TableCell align="right">
+                <IconButton size="small" sx={{ ml: 2 }}>
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
           ))}
-        </div>
-      )}
+        </TableBody>
+      </Table>
     </>
   );
+
+  // return (
+  //   <>
+  //     {isLoading ? (
+  //       <p>Loading</p>
+  //     ) : (
+  //       <div className="map-card">
+  //         {eventsCard.map((eventList) => (
+  //           <div
+  //             onClick={() => {
+  //               removeData(eventList.idevent);
+  //             }}
+  //             key={eventList.idevent}
+  //             className="events-container"
+  //           >
+  //             <p>ID:{eventList.idevent}</p>
+  //             <p>Name:{eventList.name}</p>
+  //             <p>Id user:{eventList.iduser}</p>
+  //             <p>User:{eventList.users}</p>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     )}
+  //   </>
+  // );
 };
