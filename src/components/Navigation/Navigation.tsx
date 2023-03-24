@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { Home, SignIn, Events, AddEvent, Users, AddUser } from "../Pages";
+import { EventUsers } from "../Pages/Events/EventUsers";
 import { Register } from "../Pages/Register/Register";
 
 export const Navigation = () => {
@@ -19,9 +20,9 @@ export const Navigation = () => {
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<Events />} />
           <Route path="/users" element={<Users />} />
-          {/* <PrivateRoute path="/users" componenet={PrivateRoute} /> */}
           <Route path="/add-user" element={<AddUser />} />
           <Route path="/add-event" element={<AddEvent />} />
+          <Route path="/event-users/:idevent" element={<EventUsers />} />
 
           <Route path="*" element={<p>Oops.. Erorr 404: Can't find page</p>} />
         </Routes>

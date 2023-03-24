@@ -37,7 +37,7 @@ export const SignIn = () => {
         localStorage.setItem("accessToken", response.data.accessToken);
         setEmail("");
         setPassword("");
-        navigate("/events");
+        navigate("/add-user");
         window.location.reload();
       } else console.log("error");
     } catch (error) {

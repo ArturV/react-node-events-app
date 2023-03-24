@@ -6,10 +6,12 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
+//import IconButton from "@mui/material/IconButton";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import type { TEvent } from "../../Types/types";
+//import { IconButton, Stack } from "@mui/material";
+import { Settings, Info, ContentCopy, Favorite } from "@mui/icons-material";
 
 // export type TEvent = {
 //   idevent: number;
@@ -79,15 +81,23 @@ export const GetEvents = () => {
         <TableBody>
           {eventsCard.map((eventList) => (
             <TableRow key={eventList.idevent}>
-              <TableCell>{eventList.name}</TableCell>
               <TableCell>
-                <Link to="/users">See users</Link>
+                <Link to={`/event-users/${eventList.idevent}`}>
+                  {eventList.name}
+                </Link>
+              </TableCell>
+              <TableCell>
+                <Link to={`/event-users/${eventList.idevent}`}>Show users</Link>
               </TableCell>
 
               <TableCell align="right">
-                <IconButton size="small" sx={{ ml: 2 }}>
+                <button onClick={() => removeData(eventList.idevent)}>
+                  Delete
+                </button>
+
+                {/* <IconButton size="small" sx={{ ml: 2 }}>
                   <DeleteIcon />
-                </IconButton>
+                </IconButton> */}
               </TableCell>
             </TableRow>
           ))}

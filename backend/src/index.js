@@ -3,12 +3,18 @@ import cors from "cors";
 import { PORT } from "./config.js";
 
 import auth from "../routes/auth.js";
-import { createNewEvent, getEvents, getEventbyId } from "../routes/events.js";
+import {
+  createNewEvent,
+  getEvents,
+  getEventbyId,
+  getEventUsers,
+  deleteEvent,
+} from "../routes/events.js";
 import {
   addUserToEvent,
-  getUserEvents,
   getUsers,
   getUserbyId,
+  deleteUser,
 } from "../routes/users.js";
 
 const app = express();
@@ -27,12 +33,15 @@ app.use("/auth/", auth);
 
 app.get("/events", getEvents);
 app.post("/add-event", createNewEvent);
-app.post("/add-user", addUserToEvent);
-app.get("/user-events", getUserEvents);
+app.post("/add-user", addUserToEvent); // taisytinas
 app.get("/users", getUsers);
 
-app.get("/events/:event_id", getEventbyId);
-app.get("/users/:user_id", getUserbyId);
+app.get("/event-users/:idevent", getEventUsers);
+app.get("/events/:idevent", getEventbyId);
+app.get("/users/:iduser", getUserbyId);
+
+app.delete("/events/:idevent", deleteEvent);
+app.delete("/users/:iduser", deleteUser);
 
 app.get("/", (_, res) => {
   res.send({ msg: "Server running healthy" });

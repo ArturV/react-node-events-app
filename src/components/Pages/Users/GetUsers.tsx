@@ -70,7 +70,7 @@ export const GetUsers = () => {
     }
 
     axios
-      .delete(`http://localhost:3000/users/${id}`)
+      .delete(`http://localhost:5000/users/${id}`)
       .then(() => {
         getData();
       })
@@ -104,9 +104,12 @@ export const GetUsers = () => {
               <TableCell>{userCard.birthdate}</TableCell>
               <TableCell>{userCard.event}</TableCell>
               <TableCell align="right">
-                <IconButton size="small" sx={{ ml: 2 }}>
+                <button onClick={() => removeData(userCard.iduser)}>
+                  Delete
+                </button>
+                {/* <IconButton size="small" sx={{ ml: 2 }}>
                   <DeleteIcon />
-                </IconButton>
+                </IconButton> */}
               </TableCell>
             </TableRow>
           ))}

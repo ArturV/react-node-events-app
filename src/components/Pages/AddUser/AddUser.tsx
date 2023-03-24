@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 export const AddUser = () => {
   const [userData, setUserData] = useState({
+    idevent: null,
     nameAndSurname: "",
     event: "",
     email: "",
@@ -24,12 +25,20 @@ export const AddUser = () => {
     age: null,
   });
 
+  const { exportedEvents } = EventChooser();
+
+  const options = exportedEvents.map((event) => event.name);
+  //const options = [...new Set(exportedEvents.map((event) => event.name))];
+
   const [selected, setSelected] = useState([]);
+  const [selectedFruit, setSelectedFruit] = useState("orange");
+
+  const [value, setValue] = React.useState<string | null>(options[0]); // ?
+  const [inputValue, setInputValue] = React.useState("");
+
   const selectionChangeHandler = (event: any) => {
     setSelected(event.target.value);
   };
-
-  const { exportedEvents } = EventChooser();
 
   const calculateAge = (birthDate: string): number => {
     if (!birthDate || birthDate === "") {
@@ -55,13 +64,14 @@ export const AddUser = () => {
     e.preventDefault();
 
     console.log(userData);
+    console.log(selectedFruit);
   };
 
   const handleSelect = (event: any) => {
     setUserData({
       ...userData,
       //event: event.target.value,
-      event: event.target.value,
+      idevent: event.target.value,
     });
   };
 
@@ -72,6 +82,7 @@ export const AddUser = () => {
     setUserData((prevUserData) => ({ ...prevUserData, [key]: value }));
   };
 
+  //trinti
   const handleChange = (event: any) => {
     setUserData(event.target.value);
   };
@@ -99,12 +110,30 @@ export const AddUser = () => {
           />
 
           <Autocomplete
-            //options={[...new Set(exportedEvents.map((event) => event.name))]}
-            options={exportedEvents.map((event) => event.name)}
-            aria-required="true"
+            value={value}
+            onChange={(event: any, newValue: string | null) => {
+              setValue(newValue);
+            }}
+            // inputValue={inputValue}
+            // onInputChange={(event, newInputValue) => {
+            //   setInputValue(newInputValue);
+            // }}
+            //good:  options={[...new Set(exportedEvents.map((event) => event.name))]}
+            options={options}
+            //options={exportedEvents.map((event) => event.name)}
+            // aria-required="true"
             renderInput={(params) => <TextField {...params} label="Events" />}
-            onChange={handleSelect}
+            // onChange={handleSelect}
           />
+
+          <select
+            value={selectedFruit} // ...force the select's value to match the state variable...
+            onChange={(e) => setSelectedFruit(e.target.value)} // ... and update the state variable on any change!
+          >
+            {exportedEvents.map((event) => (
+              <option value={event.value}>{event.label}</option>
+            ))}
+          </select>
 
           {/* <Select
             labelId="demo-simple-select-label"

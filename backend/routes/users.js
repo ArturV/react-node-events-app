@@ -76,31 +76,14 @@ export const addUserToEvent = async (req, res) => {
   }
 };
 
-export const getUserEvents = async (req, res) => {
-  const accessToken = req.headers.authorization?.split(" ")[1];
-
-  let payload = null;
-
-  if (!accessToken) {
-    return res.status(401).send({ error: "User unauthorised" }).end();
-  }
-
-  try {
-    payload = jwt.verify(accessToken, jwtSecret);
-  } catch (err) {
-    if (err instanceof jwt.JsonWebTokenError) {
-      return res.status(401).send({ error: "User unauthorised" }).end();
-    }
-
-    return res.status(400).end();
-  }
+export const deleteUser = async (req, res) => {
+  const iduser = +req.params.iduser;
 
   try {
     const con = await mysql.createConnection(MYSQL_CONFIG);
-
-    const query = `SELECT events.idevent, events.name, users.fullname, users.email, users.birthdate FROM events INNER JOIN users ON users.iduser = events.iduser`;
-    const [result] = await con.execute(query);
-    console.log({ result });
+    const [result] = await con.execute(
+      `DELETE FROM users WHERE iduser=${iduser}`
+    );
 
     await con.end();
 
@@ -110,6 +93,41 @@ export const getUserEvents = async (req, res) => {
     return console.error(error);
   }
 };
+
+// export const getUserEvents = async (req, res) => {
+//   const accessToken = req.headers.authorization?.split(" ")[1];
+
+//   let payload = null;
+
+//   if (!accessToken) {
+//     return res.status(401).send({ error: "User unauthorised" }).end();
+//   }
+
+//   try {
+//     payload = jwt.verify(accessToken, jwtSecret);
+//   } catch (err) {
+//     if (err instanceof jwt.JsonWebTokenError) {
+//       return res.status(401).send({ error: "User unauthorised" }).end();
+//     }
+
+//     return res.status(400).end();
+//   }
+
+//   try {
+//     const con = await mysql.createConnection(MYSQL_CONFIG);
+
+//     const query = `SELECT events.idevent, events.name, users.fullname, users.email, users.birthdate FROM events INNER JOIN users ON users.iduser = events.iduser`;
+//     const [result] = await con.execute(query);
+//     console.log({ result });
+
+//     await con.end();
+
+//     return res.status(200).send(result).end();
+//   } catch (error) {
+//     res.status(500).send(error).end();
+//     return console.error(error);
+//   }
+// };
 
 export const getUsers = async (req, res) => {
   const accessToken = req.headers.authorization?.split(" ")[1];
@@ -145,7 +163,7 @@ export const getUsers = async (req, res) => {
 export const getUserbyId = async (req, res) => {
   const accessToken = req.headers.authorization?.split(" ")[1];
 
-  const iduser = +req.params.iduser.trim();
+  const iduser = +req.params.iduser;
 
   let payload = null;
 
