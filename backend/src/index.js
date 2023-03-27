@@ -23,7 +23,7 @@ app.use(express.json());
 
 const corsOptions = {
   origin: "http://localhost:3000",
-  credentials: true, //access-control-allow-credentials:true
+  credentials: true,
   optionSuccessStatus: 200,
 };
 
@@ -33,7 +33,7 @@ app.use("/auth/", auth);
 
 app.get("/events", getEvents);
 app.post("/add-event", createNewEvent);
-app.post("/add-user", addUserToEvent); // taisytinas
+app.post("/add-user", addUserToEvent);
 app.get("/users", getUsers);
 
 app.get("/event-users/:idevent", getEventUsers);

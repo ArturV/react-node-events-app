@@ -22,6 +22,7 @@ export const Header = () => {
             color="inherit"
             align="center"
             noWrap
+            aria-label="App name"
             sx={{ flex: 1 }}
           >
             Events App

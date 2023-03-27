@@ -8,7 +8,9 @@ export const Navigation = () => {
     return (
       <BrowserRouter>
         <header className="header-navigation">
-          <Link to="/">Home</Link>
+          <Link aria-label="home" to="/">
+            Home
+          </Link>
           <Link to="/events">Events</Link>
           <Link to="/users">Users</Link>
           <Link to="/add-user">Add User</Link>
@@ -16,7 +18,7 @@ export const Navigation = () => {
         </header>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" aria-label="home" element={<Home />} />
           <Route path="/events" element={<Events />} />
           <Route path="/users" element={<Users />} />
           <Route path="/add-user" element={<AddUser />} />
@@ -31,12 +33,14 @@ export const Navigation = () => {
     return (
       <BrowserRouter>
         <header className="header-navigation">
-          <Link to="/">Home</Link>
+          <Link aria-label="home" to="/">
+            Home
+          </Link>
         </header>
 
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
+          <Route path="/" aria-label="home" element={<Home />} />
+          <Route aria-label="signin" path="/signin" element={<SignIn />} />
           <Route path="*" element={<p>Oops.. Erorr 404: Can't find page</p>} />
         </Routes>
       </BrowserRouter>

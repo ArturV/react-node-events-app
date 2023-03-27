@@ -61,10 +61,6 @@ router.post("/signin", async (req, res) => {
       `SELECT * FROM admins WHERE email=${mysql.escape(userData.email)}`
     );
 
-    const [data_userId] = await con.execute(
-      `SELECT id FROM admins WHERE email=${mysql.escape(userData.email)}`
-    );
-
     await con.end();
 
     if (!data.length) {

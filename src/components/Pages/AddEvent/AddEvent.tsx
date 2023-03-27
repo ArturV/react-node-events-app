@@ -35,7 +35,7 @@ export const AddEvent = () => {
         });
     } catch (error) {
       console.log(error);
-      alert("This event already in the list");
+      alert(error);
     }
   };
   return (

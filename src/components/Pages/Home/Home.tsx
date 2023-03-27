@@ -14,7 +14,9 @@ export const Home: FC<any> = (): ReactElement => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h3">Home</Typography>
+        <Typography height="40px" variant="h4" sx={{ m: 4 }}>
+          Add event app
+        </Typography>
       </Box>
       <img
         className="imgEvent"
