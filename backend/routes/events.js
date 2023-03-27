@@ -90,20 +90,57 @@ export const createNewEvent = async (req, res) => {
     return res.status(400).end();
   }
 
+  //here
   try {
     const con = await mysql.createConnection(MYSQL_CONFIG);
-    const [result] = await con.execute(
-      `INSERT INTO events (idevent, name) VALUES ('${id}','${name}')`
+
+    const [isEventInMysql] = await con.execute(
+      `SELECT name FROM events
+  WHERE name='${name}' ;`
     );
 
     await con.end();
 
-    return res.status(200).send(result).end();
+    if (Array.isArray(isEventInMysql) && isEventInMysql.length === 0) {
+      try {
+        const con = await mysql.createConnection(MYSQL_CONFIG);
+        const [result] = await con.execute(
+          `INSERT INTO events (idevent, name) VALUES ('${id}','${name}')`
+        );
+
+        await con.end();
+
+        return res.status(200).send(result).end();
+      } catch (error) {
+        res.status(500).send(error).end();
+      }
+    } else {
+      return res
+        .status(400)
+        .send({ error: "Error! This event already exists" })
+        .end();
+    }
   } catch (error) {
     res.status(500).send(error).end();
+
     return console.error(error);
   }
 };
+
+//   try {
+//     const con = await mysql.createConnection(MYSQL_CONFIG);
+//     const [result] = await con.execute(
+//       `INSERT INTO events (idevent, name) VALUES ('${id}','${name}')`
+//     );
+
+//     await con.end();
+
+//     return res.status(200).send(result).end();
+//   } catch (error) {
+//     res.status(500).send(error).end();
+//     return console.error(error);
+//   }
+// };
 
 export const deleteEvent = async (req, res) => {
   const idevent = +req.params.idevent;

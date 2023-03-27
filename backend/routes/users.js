@@ -6,16 +6,17 @@ export const addUserToEvent = async (req, res) => {
   const accessToken = req.headers.authorization?.split(" ")[1];
 
   const choosedEventId = +req.body?.idevent;
+  const choosedEvent = req.body?.event;
   const inputFullname = req.body?.fullname;
-  const inputEmail = req.body?.email.trim();
+  const inputEmail = req.body?.email;
   const inputBirthday = req.body?.birthdate;
   const inputAge = +req.body?.age;
 
-  console.log(choosedEventId);
-  console.log(inputFullname);
-  console.log(inputEmail);
-  console.log(inputBirthday);
-  console.log(inputAge);
+  console.log("idevent", choosedEventId);
+  console.log("event", choosedEvent);
+  console.log("name", inputFullname);
+  console.log("mail", inputEmail);
+  console.log("bday", inputBirthday);
 
   let payload = null;
 
@@ -44,8 +45,8 @@ export const addUserToEvent = async (req, res) => {
     const con = await mysql.createConnection(MYSQL_CONFIG);
 
     const [isUserInEvent] = await con.execute(
-      `SELECT idevent, email FROM users 
-    WHERE email='${inputEmail}' AND idevent=${choosedEventId} ;`
+      `SELECT idevent, email FROM users
+  WHERE email='${inputEmail}' AND event=${choosedEventId} ;`
     );
 
     await con.end();
@@ -54,14 +55,14 @@ export const addUserToEvent = async (req, res) => {
       try {
         const con = await mysql.createConnection(MYSQL_CONFIG);
         const [result] = await con.execute(
-          `INSERT INTO users (idevent, fullname, email, birthdate, age) VALUES ('${choosedEventId}','${inputFullname}','${inputEmail}','${inputBirthday}','${inputAge}')`
+          `INSERT INTO users (idevent, event, fullname, email, birthdate) VALUES ('${choosedEventId}','${choosedEvent}','${inputFullname}','${inputEmail}','${inputBirthday}')`
         );
 
         await con.end();
 
         return res.status(200).send(result).end();
       } catch (error) {
-        res.res.status(500).send(error).end();
+        res.status(500).send(error).end();
       }
     } else {
       return res

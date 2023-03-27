@@ -1,43 +1,79 @@
-import React, { FormEventHandler, useState } from "react";
+import axios from "axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Autocomplete } from "@mui/material";
-import type { TEvent } from "../../Types/types";
+import { FormEventHandler, useState } from "react";
 import { EventChooser } from "./EventChooser";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-
-import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router-dom";
+import "../../../index.css";
 
 export const AddUser = () => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<any>({
     idevent: null,
     nameAndSurname: "",
     event: "",
     email: "",
     birthDate: "",
-    age: null,
   });
 
+  const navigate = useNavigate();
   const { exportedEvents } = EventChooser();
+  const resetInput = () => {
+    setUserData("");
+  };
 
-  const options = exportedEvents.map((event) => event.name);
-  //const options = [...new Set(exportedEvents.map((event) => event.name))];
+  const handleInputChange = (e: any) => {
+    let initUser = { ...userData, [e.target.name]: e.target.value };
 
-  const [selected, setSelected] = useState([]);
-  const [selectedFruit, setSelectedFruit] = useState("orange");
+    if (e.target.name === "events") {
+      const idevent = Array.from(e.target.selectedOptions).map((option: any) =>
+        parseInt(option.value)
+      );
 
-  const [value, setValue] = React.useState<string | null>(options[0]); // ?
-  const [inputValue, setInputValue] = React.useState("");
+      const getID = +initUser.events;
 
-  const selectionChangeHandler = (event: any) => {
-    setSelected(event.target.value);
+      const foundEventNameByID = exportedEvents.filter(function (obj) {
+        return obj.idevent == getID;
+      })[0];
+
+      delete initUser.events;
+      initUser = { ...initUser, idevent: idevent };
+      initUser = { ...initUser, event: foundEventNameByID.name };
+    }
+
+    setUserData(initUser);
+  };
+
+  const handleFormSubmit: FormEventHandler<HTMLFormElement> = (e: any) => {
+    e.preventDefault();
+
+    axios
+      .post(
+        "http://localhost:5000/add-user",
+
+        {
+          fullname: userData.nameAndSurname,
+          event: userData.event,
+          idevent: userData.idevent,
+          email: userData.email,
+          birthdate: userData.birthDate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then(() => {
+        alert(`User added`);
+        resetInput();
+        navigate("/users");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const calculateAge = (birthDate: string): number => {
@@ -60,33 +96,6 @@ export const AddUser = () => {
     }
   };
 
-  const handleFormSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    console.log(userData);
-    console.log(selectedFruit);
-  };
-
-  const handleSelect = (event: any) => {
-    setUserData({
-      ...userData,
-      //event: event.target.value,
-      idevent: event.target.value,
-    });
-  };
-
-  const handleUserDataChange = (
-    value: string,
-    key: "email" | "nameAndSurname" | "event" | "birthDate" | "age"
-  ) => {
-    setUserData((prevUserData) => ({ ...prevUserData, [key]: value }));
-  };
-
-  //trinti
-  const handleChange = (event: any) => {
-    setUserData(event.target.value);
-  };
-
   return (
     <>
       <Typography height="40px" variant="h4" sx={{ m: 4 }}>
@@ -98,105 +107,42 @@ export const AddUser = () => {
             margin="normal"
             required
             fullWidth
-            id="FullName"
             label="Add Name & Surname"
-            name="FullName"
+            name="nameAndSurname"
             autoFocus
             aria-required="true"
             value={userData.nameAndSurname}
-            onChange={(e) =>
-              handleUserDataChange(e.target.value, "nameAndSurname")
-            }
+            onChange={handleInputChange}
           />
 
-          <Autocomplete
-            value={value}
-            onChange={(event: any, newValue: string | null) => {
-              setValue(newValue);
-            }}
-            // inputValue={inputValue}
-            // onInputChange={(event, newInputValue) => {
-            //   setInputValue(newInputValue);
-            // }}
-            //good:  options={[...new Set(exportedEvents.map((event) => event.name))]}
-            options={options}
-            //options={exportedEvents.map((event) => event.name)}
-            // aria-required="true"
-            renderInput={(params) => <TextField {...params} label="Events" />}
-            // onChange={handleSelect}
-          />
-
-          <select
-            value={selectedFruit} // ...force the select's value to match the state variable...
-            onChange={(e) => setSelectedFruit(e.target.value)} // ... and update the state variable on any change!
-          >
-            {exportedEvents.map((event) => (
-              <option value={event.value}>{event.label}</option>
+          <select name="events" id="event-choice" onChange={handleInputChange}>
+            {exportedEvents.map((event, idevent) => (
+              <option key={idevent} value={event.idevent}>
+                {event.name}
+              </option>
             ))}
           </select>
-
-          {/* <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={exportedEvents.map((event) => event.name)}
-            label="even"
-            onChange={handleSelect}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-          </Select> */}
-
-          {/* <Select
-            labelId="simple-select-label"
-            value={selected}
-            onChange={selectionChangeHandler}
-            renderValue={(selected) => (
-              <div>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </div>
-            )}
-          >
-            {exportedEvents.map((event) => {
-              return <MenuItem value={event.name}>{event.name}</MenuItem>;
-            })}
-          </Select> */}
 
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
+            type={"email"}
             label="Email"
             name="email"
             aria-required="true"
             value={userData.email}
-            onChange={(e) => handleUserDataChange(e.target.value, "email")}
+            onChange={handleInputChange}
           />
-
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="birth"
-            label="Date of birth"
-            name="birth"
-            value={userData.birthDate}
-            onChange={(e) => handleUserDataChange(e.target.value, "birthDate")}
-          />
-
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="Date of birth" value={userData.birthDate} />
-          </LocalizationProvider> */}
 
           <input
             type="date"
+            id="date-chooser"
+            name="birthDate"
             value={userData.birthDate}
             min="1918-01-01"
-            onChange={(e) => {
-              console.log(e.target.value);
-              handleUserDataChange(e.target.value, "birthDate");
-            }}
+            onChange={handleInputChange}
           />
 
           <TextField
@@ -210,6 +156,7 @@ export const AddUser = () => {
               readOnly: true,
             }}
             value={calculateAge(userData.birthDate)}
+            onChange={handleInputChange}
           />
 
           <Button
@@ -224,54 +171,4 @@ export const AddUser = () => {
       </Container>
     </>
   );
-
-  // return (
-  //   <form onSubmit={handleFormSubmit}>
-  //     <input
-  //       type="text"
-  //       placeholder="Name & Surname"
-  //       value={userData.nameAndSurname}
-  //       onChange={(e) => {
-  //         handleUserDataChange(e.target.value, "nameAndSurname");
-  //       }}
-  //     />
-  //     <select
-  //       name="event"
-  //       value={userData.event}
-  //       onChange={(e) => {
-  //         handleUserDataChange(e.target.value, "event");
-  //       }}
-  //     >
-  //       <option value="a">a</option>
-  //       <option value="b">b</option>
-  //       <option value="c">c</option>
-  //       <option value="d">d</option>
-  //     </select>
-  //     <input
-  //       type="text"
-  //       placeholder="Email"
-  //       value={userData.email}
-  //       onChange={(e) => {
-  //         handleUserDataChange(e.target.value, "email");
-  //       }}
-  //     />
-  //     <input
-  //       type="date"
-  //       value={userData.birthDate}
-  //       min="1918-01-01"
-  //       onChange={(e) => {
-  //         console.log(e.target.value);
-  //         handleUserDataChange(e.target.value, "birthDate");
-  //       }}
-  //     />
-  //     <input
-  //       type="text"
-  //       placeholder="Age"
-  //       readOnly
-  //       value={calculateAge(userData.birthDate)}
-  //     />
-
-  //     <button>Submit</button>
-  //   </form>
-  // );
 };

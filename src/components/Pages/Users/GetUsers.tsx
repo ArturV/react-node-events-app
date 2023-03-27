@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,7 +5,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Typography } from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export type TUser = {
   iduser: number;
@@ -22,7 +24,6 @@ export type TUser = {
 export const GetUsers = () => {
   const [usersCards, setUsersCards] = useState<TUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const SERV = `http://localhost:5000/users`;
 
   const getData = async () => {
     try {
@@ -86,6 +87,15 @@ export const GetUsers = () => {
       <Typography height="40px" variant="h4" sx={{ m: 4 }}>
         Users in Events
       </Typography>
+
+      <IconButton size="small" sx={{ ml: 2 }}>
+        {
+          <Link to={`/add-user`}>
+            <AddCircleIcon />
+          </Link>
+        }
+      </IconButton>
+
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -103,13 +113,17 @@ export const GetUsers = () => {
               <TableCell>{userCard.email}</TableCell>
               <TableCell>{userCard.birthdate}</TableCell>
               <TableCell>{userCard.event}</TableCell>
-              <TableCell align="right">
-                <button onClick={() => removeData(userCard.iduser)}>
-                  Delete
-                </button>
-                {/* <IconButton size="small" sx={{ ml: 2 }}>
+              <TableCell
+                align="right"
+                onClick={() => removeData(userCard.iduser)}
+              >
+                <IconButton size="small" sx={{ ml: 2 }}>
                   <DeleteIcon />
-                </IconButton> */}
+                </IconButton>
+
+                {/* <button onClick={() => removeData(userCard.iduser)}>
+                  Delete
+                </button> */}
               </TableCell>
             </TableRow>
           ))}
@@ -117,30 +131,4 @@ export const GetUsers = () => {
       </Table>
     </>
   );
-
-  // <>
-  //   {isLoading ? (
-  //     <p>Loading</p>
-  //   ) : (
-  //     <div className="users-card">
-  //       {usersCards.map((userCard) => (
-  //         <div
-  //           onClick={() => {
-  //             removeData(userCard.iduser);
-  //           }}
-  //           key={userCard.iduser}
-  //           className="users-container"
-  //         >
-  //           <p>ID:{userCard.iduser}</p>
-  //           <p>Name Surname:{userCard.fullname}</p>
-  //           <p>Event:{userCard.event}</p>
-  //           <p>Event id:{userCard.idevent}</p>
-  //           <p>Email:{userCard.email}</p>
-  //           <p>Age:{userCard.age}</p>
-  //           <p>Birthdate:{userCard.birthdate}</p>
-  //         </div>
-  //       ))}
-  //     </div>
-  //   )}
-  // </>
 };

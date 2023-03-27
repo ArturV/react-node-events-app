@@ -45,3 +45,41 @@ body {
   text-transform: uppercase;
   color: #1976d2;
 }
+
+#event-choice {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border-color: rgb(179, 179, 179);
+  border-radius: 4px;
+  color: black;
+  font-size: 1rem;
+}
+
+#event-choice:focus {
+  border-color: #1976d2;
+  color: rgb(118, 118, 118);
+}
+
+#date-chooser {
+  width: 92%;
+  padding: 15px;
+  margin-top: 10px;
+  border-color: rgb(179, 179, 179);
+  border-radius: 4px;
+  color: black;
+  font-size: 1rem;
+}
+
+#date-chooser:focus {
+  border-color: #1976d2;
+  color: rgb(118, 118, 118);
+}
+
+.imgEvent {
+  margin-top: 5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

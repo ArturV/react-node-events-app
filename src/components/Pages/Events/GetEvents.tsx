@@ -1,24 +1,16 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
-//import IconButton from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import type { TEvent } from "../../Types/types";
-//import { IconButton, Stack } from "@mui/material";
-import { Settings, Info, ContentCopy, Favorite } from "@mui/icons-material";
-
-// export type TEvent = {
-//   idevent: number;
-//   name: string | null;
-//   iduser: number;
-//   users: string | null;
-// };
 
 export const GetEvents = () => {
   const [eventsCard, setEventsCard] = useState<TEvent[]>([]);
@@ -35,6 +27,7 @@ export const GetEvents = () => {
         .then((res) => {
           if (Array.isArray(res.data)) {
             setEventsCard(res.data);
+            console.log(res.data);
           }
         });
     } catch (error) {
@@ -70,6 +63,15 @@ export const GetEvents = () => {
       <Typography height="40px" variant="h4" sx={{ m: 4 }}>
         Events
       </Typography>
+
+      <IconButton size="small" sx={{ ml: 2 }}>
+        {
+          <Link to={`/add-event`}>
+            <AddCircleIcon />
+          </Link>
+        }
+      </IconButton>
+
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -90,14 +92,17 @@ export const GetEvents = () => {
                 <Link to={`/event-users/${eventList.idevent}`}>Show users</Link>
               </TableCell>
 
-              <TableCell align="right">
-                <button onClick={() => removeData(eventList.idevent)}>
+              <TableCell
+                align="right"
+                onClick={() => removeData(eventList.idevent)}
+              >
+                {/* <button onClick={() => removeData(eventList.idevent)}>
                   Delete
-                </button>
+                </button> */}
 
-                {/* <IconButton size="small" sx={{ ml: 2 }}>
+                <IconButton size="small" sx={{ ml: 2 }}>
                   <DeleteIcon />
-                </IconButton> */}
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
@@ -105,29 +110,4 @@ export const GetEvents = () => {
       </Table>
     </>
   );
-
-  // return (
-  //   <>
-  //     {isLoading ? (
-  //       <p>Loading</p>
-  //     ) : (
-  //       <div className="map-card">
-  //         {eventsCard.map((eventList) => (
-  //           <div
-  //             onClick={() => {
-  //               removeData(eventList.idevent);
-  //             }}
-  //             key={eventList.idevent}
-  //             className="events-container"
-  //           >
-  //             <p>ID:{eventList.idevent}</p>
-  //             <p>Name:{eventList.name}</p>
-  //             <p>Id user:{eventList.iduser}</p>
-  //             <p>User:{eventList.users}</p>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     )}
-  //   </>
-  // );
 };

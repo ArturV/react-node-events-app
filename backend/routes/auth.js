@@ -29,9 +29,6 @@ router.post("/register", async (req, res) => {
 
   try {
     const hashedPassword = bcrypt.hashSync(userData.password);
-    // const reg_timestamp = new Date().toLocaleString();
-    console.log(hashedPassword);
-    console.log(userData.password);
     const con = await mysql.createConnection(MYSQL_CONFIG);
 
     const [data] = await con.execute(
@@ -39,7 +36,6 @@ router.post("/register", async (req, res) => {
         userData.name
       )}, ${mysql.escape(userData.email)}, '${hashedPassword}')`
     );
-    console.log({ hashedPassword });
     await con.end();
 
     return res.send(data);
@@ -55,7 +51,7 @@ router.post("/signin", async (req, res) => {
     userData = await loginUserSchema.validateAsync(userData);
   } catch (err) {
     console.log(err);
-    return res.status(400).send({ err: `Incorrect email or password 1` });
+    return res.status(400).send({ err: `Incorrect email or password !` });
   }
 
   try {
@@ -74,40 +70,28 @@ router.post("/signin", async (req, res) => {
     if (!data.length) {
       return res
         .status(400)
-        .send({ error: "Incorrect email or password 2" })
+        .send({ error: "Incorrect email or password (length)" })
         .end();
     }
 
     const isAuthed = bcrypt.compareSync(userData.password, data[0].password);
-    console.log("isAuthed: " + isAuthed);
-    console.log(userData.password);
-    console.log(data[0].password);
 
     if (isAuthed) {
       const accessToken = jwt.sign(
         { id: data[0].id, email: data[0].email },
         jwtSecret
       );
-      // res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+
       return res.send({ message: "Succesfully logged in", accessToken }).end();
     }
 
     return res
       .status(400)
-      .send({ error: "Incorrect email or password 3" })
+      .send({ error: "Incorrect email or password [token]" })
       .end();
   } catch (err) {
     return res.status(500).send({ error: "Unexpected error" });
   }
 });
-
-// router.get("/signout", (req, res) => {
-//   req.logout();
-//   res
-//     .status(200)
-//     .json({
-//       status: "Bye!",
-//     });
-// });
 
 export default router;

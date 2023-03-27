@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import React, { ReactElement, FC } from "react";
+import { ReactElement, FC } from "react";
 
 export const Register: FC<any> = (): ReactElement => {
   return (
@@ -15,6 +14,7 @@ export const Register: FC<any> = (): ReactElement => {
       }}
     >
       <Typography variant="h3">Register</Typography>
+      {/* to do later */}
     </Box>
   );
 };

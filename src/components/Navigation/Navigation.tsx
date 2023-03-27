@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { Home, SignIn, Events, AddEvent, Users, AddUser } from "../Pages";
 import { EventUsers } from "../Pages/Events/EventUsers";
-import { Register } from "../Pages/Register/Register";
 
 export const Navigation = () => {
   const token = localStorage.getItem("accessToken");
@@ -33,7 +32,6 @@ export const Navigation = () => {
       <BrowserRouter>
         <header className="header-navigation">
           <Link to="/">Home</Link>
-          {/* <Link to="/signin">Signin</Link> */}
         </header>
 
         <Routes>

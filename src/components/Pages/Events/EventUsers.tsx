@@ -1,14 +1,12 @@
-import axios from "axios";
-import type { TEvent, TUserEvent } from "../../Types/types";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import type { TUserEvent, TEvent } from "../../Types/";
+import { useState } from "react";
 
 export const EventUsers = () => {
   const [eventsCard, setEventsCard] = useState<TUserEvent[]>([]);
@@ -29,15 +27,13 @@ export const EventUsers = () => {
         .then((res) => {
           if (Array.isArray(res.data)) {
             setEventsCard(res.data);
+            // console.log(res.data);
           }
         });
     } catch (error) {
       console.log(error);
     }
   };
-
-  //   useEffect(() => {
-  // }, []);
 
   getUsersInEvent(number);
   return (
