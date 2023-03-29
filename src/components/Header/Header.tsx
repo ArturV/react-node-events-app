@@ -1,15 +1,12 @@
 import IconButton from "@mui/material/IconButton";
-import LockIcon from "@mui/icons-material/Lock";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Navigation } from "../Navigation";
-import axios from "axios";
-import { createContext, useState } from "react";
-import { redirect } from "react-router-dom";
+import type { FC } from "react";
 
-export const Header = () => {
+export const Header: FC = () => {
   const token = localStorage.getItem("accessToken");
 
   return (
@@ -36,7 +33,8 @@ export const Header = () => {
               variant="outlined"
               size="small"
               onClick={() => (
-                localStorage.removeItem("accessToken"), window.location.reload()
+                localStorage.removeItem("accessToken"),
+                (window.location.href = "/signin")
               )}
             >
               Sign Out
@@ -44,6 +42,7 @@ export const Header = () => {
           ) : (
             <Button
               variant="outlined"
+              aria-label="Sign in"
               size="small"
               onClick={() => (window.location.href = "/signin")}
             >

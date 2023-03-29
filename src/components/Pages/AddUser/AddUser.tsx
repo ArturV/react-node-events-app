@@ -33,7 +33,6 @@ export const AddUser = () => {
       );
 
       const getID = +initUser.events;
-
       const foundEventNameByID = exportedEvents.filter(function (obj) {
         return obj.idevent == getID;
       })[0];

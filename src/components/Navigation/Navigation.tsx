@@ -4,6 +4,7 @@ import { EventUsers } from "../Pages/Events/EventUsers";
 
 export const Navigation = () => {
   const token = localStorage.getItem("accessToken");
+
   if (token) {
     return (
       <BrowserRouter>

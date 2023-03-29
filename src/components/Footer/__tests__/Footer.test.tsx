@@ -6,7 +6,7 @@ describe("Footer", () => {
   it("should match snapshot", () => {
     const tree = renderer.create(<Footer />);
 
-    // expect(tree).toMatchSnapshot();
+    expect(tree).toMatchSnapshot();
   });
 
   it("should render copyright", () => {

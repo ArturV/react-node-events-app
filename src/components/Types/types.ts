@@ -17,3 +17,13 @@ export type TUserEvent = {
   email: string | null;
   birthdate: string | null;
 };
+
+export type TUser = {
+  iduser: number;
+  fullname: string | null;
+  event: string | null;
+  idevent: number;
+  email: string | null;
+  age: number;
+  birthdate: string | null;
+};

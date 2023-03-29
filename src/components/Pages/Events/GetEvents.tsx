@@ -6,11 +6,11 @@ import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import axios from "axios";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import type { TEvent } from "../../Types/types";
+import type { TEvent } from "../../Types/";
 
 export const GetEvents = () => {
   const [eventsCard, setEventsCard] = useState<TEvent[]>([]);
@@ -27,7 +27,6 @@ export const GetEvents = () => {
         .then((res) => {
           if (Array.isArray(res.data)) {
             setEventsCard(res.data);
-            console.log(res.data);
           }
         });
     } catch (error) {
@@ -96,10 +95,6 @@ export const GetEvents = () => {
                 align="right"
                 onClick={() => removeData(eventList.idevent)}
               >
-                {/* <button onClick={() => removeData(eventList.idevent)}>
-                  Delete
-                </button> */}
-
                 <IconButton size="small" sx={{ ml: 2 }}>
                   <DeleteIcon />
                 </IconButton>

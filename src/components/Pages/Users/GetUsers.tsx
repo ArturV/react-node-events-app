@@ -10,16 +10,7 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-export type TUser = {
-  iduser: number;
-  fullname: string | null;
-  event: string | null;
-  idevent: number;
-  email: string | null;
-  age: number;
-  birthdate: string | null;
-};
+import type { TUser } from "../../Types/";
 
 export const GetUsers = () => {
   const [usersCards, setUsersCards] = useState<TUser[]>([]);
@@ -46,24 +37,7 @@ export const GetUsers = () => {
     }, 1_00);
   };
 
-  const handleClick = (id: number) => {
-    const shouldDelete = window.confirm("Are you want to delete?");
-
-    if (!shouldDelete) {
-      return;
-    }
-
-    axios
-      .delete(`http://localhost:3000/users/${id}`)
-      .then(() => {
-        getData();
-      })
-      .catch((error) => console.error(error));
-  };
-
-  //const removeData: React.FormEventHandler<HTMLFormElement> = async (e) => {
-  //e.preventDefault();
-  const removeData = (id: number) => {
+  const handleClickToRemove = (id: number) => {
     const shouldDelete = window.confirm("Are you want to delete?");
 
     if (!shouldDelete) {
@@ -115,15 +89,11 @@ export const GetUsers = () => {
               <TableCell>{userCard.event}</TableCell>
               <TableCell
                 align="right"
-                onClick={() => removeData(userCard.iduser)}
+                onClick={() => handleClickToRemove(userCard.iduser)}
               >
                 <IconButton size="small" sx={{ ml: 2 }}>
                   <DeleteIcon />
                 </IconButton>
-
-                {/* <button onClick={() => removeData(userCard.iduser)}>
-                  Delete
-                </button> */}
               </TableCell>
             </TableRow>
           ))}

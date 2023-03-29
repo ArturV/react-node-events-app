@@ -8,9 +8,9 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -35,6 +35,7 @@ export const SignIn = () => {
 
       if (response) {
         localStorage.setItem("accessToken", response.data.accessToken);
+
         setEmail("");
         setPassword("");
         navigate("/add-user");

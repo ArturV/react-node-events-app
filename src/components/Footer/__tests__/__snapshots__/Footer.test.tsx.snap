@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer should match snapshot 1`] = `
+<footer>
+  <footer
+    className="MuiBox-root css-1k76al1"
+  >
+    <div
+      className="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
+    >
+      <p
+        aria-label="copyright"
+        className="MuiTypography-root MuiTypography-subtitle1 MuiTypography-alignCenter css-1xatcrf-MuiTypography-root"
+      >
+        Copyright 2023
+      </p>
+    </div>
+  </footer>
+</footer>
+`;

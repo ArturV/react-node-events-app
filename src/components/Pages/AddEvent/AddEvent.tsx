@@ -33,9 +33,9 @@ export const AddEvent = () => {
           alert(`Event added`);
           resetInput();
         });
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      alert(error);
+      alert(`Error! ${error.response.data.error}`);
     }
   };
   return (

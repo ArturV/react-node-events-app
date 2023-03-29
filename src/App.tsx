@@ -10,9 +10,7 @@ function App() {
   return (
     <div className="EventApp">
       <Header />
-      <main>
-        <section> </section>
-      </main>
+
       <Footer />
     </div>
   );

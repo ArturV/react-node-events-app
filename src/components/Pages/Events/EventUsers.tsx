@@ -5,7 +5,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Typography } from "@mui/material";
 import axios from "axios";
-import type { TUserEvent, TEvent } from "../../Types/";
+import type { TUserEvent } from "../../Types/";
 import { useState } from "react";
 
 export const EventUsers = () => {
@@ -27,7 +27,6 @@ export const EventUsers = () => {
         .then((res) => {
           if (Array.isArray(res.data)) {
             setEventsCard(res.data);
-            // console.log(res.data);
           }
         });
     } catch (error) {
@@ -57,12 +56,7 @@ export const EventUsers = () => {
               <TableCell>{eventList.email}</TableCell>
               <TableCell> {eventList.birthdate}</TableCell>
 
-              <TableCell align="right">
-                {eventList.name}
-                {/* <IconButton size="small" sx={{ ml: 2 }}>
-                  <DeleteIcon />
-                </IconButton> */}
-              </TableCell>
+              <TableCell align="right">{eventList.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
