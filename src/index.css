@@ -1,0 +1,85 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+@media (min-width: 1200px) {
+  .EventApp {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 600px) {
+  .EventApp {
+    padding-left: 24px;
+    padding-left: 24px;
+  }
+}
+.EventApp {
+  width: 100%;
+  margin-left: auto;
+  box-sizing: border-box;
+  margin-right: auto;
+  display: block;
+}
+
+.header-navigation {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  margin: 10px auto;
+  height: 64px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+}
+
+.header-navigation a {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #1976d2;
+}
+
+#event-choice {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border-color: rgb(179, 179, 179);
+  border-radius: 4px;
+  color: black;
+  font-size: 1rem;
+}
+
+#event-choice:focus {
+  border-color: #1976d2;
+  color: rgb(118, 118, 118);
+}
+
+#date-chooser {
+  width: 92%;
+  padding: 15px;
+  margin-top: 10px;
+  border-color: rgb(179, 179, 179);
+  border-radius: 4px;
+  color: black;
+  font-size: 1rem;
+}
+
+#date-chooser:focus {
+  border-color: #1976d2;
+  color: rgb(118, 118, 118);
+}
+
+.imgEvent {
+  margin-top: 5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
