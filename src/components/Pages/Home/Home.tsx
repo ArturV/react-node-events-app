@@ -10,8 +10,8 @@ export const Home: FC<any> = (): ReactElement => {
           flexGrow: 1,
           backgroundColor: "whitesmoke",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: "left",
+          alignItems: "left",
         }}
       >
         <Typography height="40px" variant="h4" sx={{ m: 4 }}>
